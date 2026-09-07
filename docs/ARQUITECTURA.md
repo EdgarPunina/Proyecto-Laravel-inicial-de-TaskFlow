@@ -4,11 +4,9 @@
 
 ## Diagrama
 
-Diagrama C4 (Nivel 2 - Contenedores):
+![Diagrama C4 de contenedores de TaskFlow](diagrama-arquitectura.svg)
 
-- Persona (usuario final) → usa → SPA (React)
-- SPA (React), interfaz de usuario → HTTPS/JSON → API (Laravel), backend REST
-- API (Laravel) → SQL → Base de datos (MySQL), persistencia de datos
+Persona (usuario final) → usa → SPA (React) → HTTPS/JSON → API (Laravel) → SQL → Base de datos (MySQL)
 
 ## Decisiones de arquitectura
 
