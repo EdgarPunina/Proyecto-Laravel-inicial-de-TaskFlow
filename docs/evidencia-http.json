@@ -1,0 +1,439 @@
+{
+  "executed_at": "2026-09-11T18:50:50.928Z",
+  "base_url": "http://127.0.0.1:8000",
+  "checks": [
+    {
+      "method": "GET",
+      "endpoint": "/tasks",
+      "expected": 200,
+      "status": 200,
+      "body": null,
+      "response": {
+        "data": [
+          {
+            "id": 1,
+            "title": "Ea ea officia qui dignissimos saepe.",
+            "description": null,
+            "status": "pendiente",
+            "user_id": 1,
+            "created_at": "2026-09-11 18:49"
+          },
+          {
+            "id": 2,
+            "title": "Et cum aut ut.",
+            "description": "Autem autem ut dolor iusto. Doloremque atque illo iste illo alias atque. Quidem in laboriosam libero doloremque quis ex odio reiciendis. Sapiente est nobis qui nostrum maiores exercitationem nostrum.",
+            "status": "en_progreso",
+            "user_id": 1,
+            "created_at": "2026-09-11 18:49"
+          }
+        ]
+      }
+    },
+    {
+      "method": "POST",
+      "endpoint": "/tasks",
+      "expected": 201,
+      "status": 201,
+      "body": {
+        "title": "Probar API sesión 04",
+        "user_id": 1
+      },
+      "response": {
+        "data": {
+          "id": 3,
+          "title": "Probar API sesión 04",
+          "description": null,
+          "status": "pendiente",
+          "user_id": 1,
+          "created_at": "2026-09-11 18:50"
+        }
+      }
+    },
+    {
+      "method": "GET",
+      "endpoint": "/tasks/3",
+      "expected": 200,
+      "status": 200,
+      "body": null,
+      "response": {
+        "data": {
+          "id": 3,
+          "title": "Probar API sesión 04",
+          "description": null,
+          "status": "pendiente",
+          "user_id": 1,
+          "created_at": "2026-09-11 18:50"
+        }
+      }
+    },
+    {
+      "method": "PUT",
+      "endpoint": "/tasks/3",
+      "expected": 200,
+      "status": 200,
+      "body": {
+        "status": "en_progreso"
+      },
+      "response": {
+        "data": {
+          "id": 3,
+          "title": "Probar API sesión 04",
+          "description": null,
+          "status": "en_progreso",
+          "user_id": 1,
+          "created_at": "2026-09-11 18:50"
+        }
+      }
+    },
+    {
+      "method": "PATCH",
+      "endpoint": "/tasks/3",
+      "expected": 200,
+      "status": 200,
+      "body": {
+        "status": "completada"
+      },
+      "response": {
+        "data": {
+          "id": 3,
+          "title": "Probar API sesión 04",
+          "description": null,
+          "status": "completada",
+          "user_id": 1,
+          "created_at": "2026-09-11 18:50"
+        }
+      }
+    },
+    {
+      "method": "POST",
+      "endpoint": "/tasks",
+      "expected": 422,
+      "status": 422,
+      "body": {
+        "user_id": 1
+      },
+      "response": {
+        "message": "The title field is required.",
+        "errors": {
+          "title": [
+            "The title field is required."
+          ]
+        }
+      }
+    },
+    {
+      "method": "POST",
+      "endpoint": "/tasks",
+      "expected": 422,
+      "status": 422,
+      "body": {
+        "title": "Usuario inexistente",
+        "user_id": 2147483647
+      },
+      "response": {
+        "message": "The selected user id is invalid.",
+        "errors": {
+          "user_id": [
+            "The selected user id is invalid."
+          ]
+        }
+      }
+    },
+    {
+      "method": "PATCH",
+      "endpoint": "/tasks/3",
+      "expected": 422,
+      "status": 422,
+      "body": {
+        "status": "incorrecto"
+      },
+      "response": {
+        "message": "The selected status is invalid.",
+        "errors": {
+          "status": [
+            "The selected status is invalid."
+          ]
+        }
+      }
+    },
+    {
+      "method": "DELETE",
+      "endpoint": "/tasks/3",
+      "expected": 204,
+      "status": 204,
+      "body": null,
+      "response": null
+    },
+    {
+      "method": "GET",
+      "endpoint": "/tasks/3",
+      "expected": 404,
+      "status": 404,
+      "body": null,
+      "response": {
+        "message": "No query results for model [App\\Models\\Task] 3",
+        "exception": "Symfony\\Component\\HttpKernel\\Exception\\NotFoundHttpException",
+        "file": "C:\\PROYECTOS\\Practica CEDIA\\taskflow-backend\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php",
+        "line": 487,
+        "trace": [
+          {
+            "file": "C:\\PROYECTOS\\Practica CEDIA\\taskflow-backend\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Exceptions\\Handler.php",
+            "line": 463,
+            "function": "prepareException",
+            "class": "Illuminate\\Foundation\\Exceptions\\Handler",
+            "type": "->"
+          },
+          {
+            "file": "C:\\PROYECTOS\\Practica CEDIA\\taskflow-backend\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Pipeline.php",
+            "line": 51,
+            "function": "render",
+            "class": "Illuminate\\Foundation\\Exceptions\\Handler",
+            "type": "->"
+          },
+          {
+            "file": "C:\\PROYECTOS\\Practica CEDIA\\taskflow-backend\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 188,
+            "function": "handleException",
+            "class": "Illuminate\\Routing\\Pipeline",
+            "type": "->"
+          },
+          {
+            "file": "C:\\PROYECTOS\\Practica CEDIA\\taskflow-backend\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php",
+            "line": 159,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+          },
+          {
+            "file": "C:\\PROYECTOS\\Practica CEDIA\\taskflow-backend\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php",
+            "line": 135,
+            "function": "handleRequest",
+            "class": "Illuminate\\Routing\\Middleware\\ThrottleRequests",
+            "type": "->"
+          },
+          {
+            "file": "C:\\PROYECTOS\\Practica CEDIA\\taskflow-backend\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php",
+            "line": 87,
+            "function": "handleRequestUsingNamedLimiter",
+            "class": "Illuminate\\Routing\\Middleware\\ThrottleRequests",
+            "type": "->"
+          },
+          {
+            "file": "C:\\PROYECTOS\\Practica CEDIA\\taskflow-backend\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 183,
+            "function": "handle",
+            "class": "Illuminate\\Routing\\Middleware\\ThrottleRequests",
+            "type": "->"
+          },
+          {
+            "file": "C:\\PROYECTOS\\Practica CEDIA\\taskflow-backend\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 119,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+          },
+          {
+            "file": "C:\\PROYECTOS\\Practica CEDIA\\taskflow-backend\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 807,
+            "function": "then",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+          },
+          {
+            "file": "C:\\PROYECTOS\\Practica CEDIA\\taskflow-backend\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 784,
+            "function": "runRouteWithinStack",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+          },
+          {
+            "file": "C:\\PROYECTOS\\Practica CEDIA\\taskflow-backend\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 748,
+            "function": "runRoute",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+          },
+          {
+            "file": "C:\\PROYECTOS\\Practica CEDIA\\taskflow-backend\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php",
+            "line": 737,
+            "function": "dispatchToRoute",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+          },
+          {
+            "file": "C:\\PROYECTOS\\Practica CEDIA\\taskflow-backend\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php",
+            "line": 200,
+            "function": "dispatch",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+          },
+          {
+            "file": "C:\\PROYECTOS\\Practica CEDIA\\taskflow-backend\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 144,
+            "function": "Illuminate\\Foundation\\Http\\{closure}",
+            "class": "Illuminate\\Foundation\\Http\\Kernel",
+            "type": "->"
+          },
+          {
+            "file": "C:\\PROYECTOS\\Practica CEDIA\\taskflow-backend\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php",
+            "line": 21,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+          },
+          {
+            "file": "C:\\PROYECTOS\\Practica CEDIA\\taskflow-backend\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php",
+            "line": 31,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest",
+            "type": "->"
+          },
+          {
+            "file": "C:\\PROYECTOS\\Practica CEDIA\\taskflow-backend\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 183,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull",
+            "type": "->"
+          },
+          {
+            "file": "C:\\PROYECTOS\\Practica CEDIA\\taskflow-backend\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php",
+            "line": 21,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+          },
+          {
+            "file": "C:\\PROYECTOS\\Practica CEDIA\\taskflow-backend\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php",
+            "line": 40,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest",
+            "type": "->"
+          },
+          {
+            "file": "C:\\PROYECTOS\\Practica CEDIA\\taskflow-backend\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 183,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\TrimStrings",
+            "type": "->"
+          },
+          {
+            "file": "C:\\PROYECTOS\\Practica CEDIA\\taskflow-backend\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize.php",
+            "line": 27,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+          },
+          {
+            "file": "C:\\PROYECTOS\\Practica CEDIA\\taskflow-backend\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 183,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize",
+            "type": "->"
+          },
+          {
+            "file": "C:\\PROYECTOS\\Practica CEDIA\\taskflow-backend\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php",
+            "line": 99,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+          },
+          {
+            "file": "C:\\PROYECTOS\\Practica CEDIA\\taskflow-backend\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 183,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance",
+            "type": "->"
+          },
+          {
+            "file": "C:\\PROYECTOS\\Practica CEDIA\\taskflow-backend\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\HandleCors.php",
+            "line": 62,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+          },
+          {
+            "file": "C:\\PROYECTOS\\Practica CEDIA\\taskflow-backend\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 183,
+            "function": "handle",
+            "class": "Illuminate\\Http\\Middleware\\HandleCors",
+            "type": "->"
+          },
+          {
+            "file": "C:\\PROYECTOS\\Practica CEDIA\\taskflow-backend\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\TrustProxies.php",
+            "line": 39,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+          },
+          {
+            "file": "C:\\PROYECTOS\\Practica CEDIA\\taskflow-backend\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 183,
+            "function": "handle",
+            "class": "Illuminate\\Http\\Middleware\\TrustProxies",
+            "type": "->"
+          },
+          {
+            "file": "C:\\PROYECTOS\\Practica CEDIA\\taskflow-backend\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php",
+            "line": 119,
+            "function": "Illuminate\\Pipeline\\{closure}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+          },
+          {
+            "file": "C:\\PROYECTOS\\Practica CEDIA\\taskflow-backend\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php",
+            "line": 175,
+            "function": "then",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+          },
+          {
+            "file": "C:\\PROYECTOS\\Practica CEDIA\\taskflow-backend\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php",
+            "line": 144,
+            "function": "sendRequestThroughRouter",
+            "class": "Illuminate\\Foundation\\Http\\Kernel",
+            "type": "->"
+          },
+          {
+            "file": "C:\\PROYECTOS\\Practica CEDIA\\taskflow-backend\\public\\index.php",
+            "line": 52,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Kernel",
+            "type": "->"
+          },
+          {
+            "file": "C:\\PROYECTOS\\Practica CEDIA\\taskflow-backend\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\resources\\server.php",
+            "line": 16,
+            "function": "require_once"
+          }
+        ]
+      }
+    },
+    {
+      "method": "GET",
+      "endpoint": "/tasks",
+      "expected": 200,
+      "status": 200,
+      "body": null,
+      "response": {
+        "data": [
+          {
+            "id": 1,
+            "title": "Ea ea officia qui dignissimos saepe.",
+            "description": null,
+            "status": "pendiente",
+            "user_id": 1,
+            "created_at": "2026-09-11 18:49"
+          },
+          {
+            "id": 2,
+            "title": "Et cum aut ut.",
+            "description": "Autem autem ut dolor iusto. Doloremque atque illo iste illo alias atque. Quidem in laboriosam libero doloremque quis ex odio reiciendis. Sapiente est nobis qui nostrum maiores exercitationem nostrum.",
+            "status": "en_progreso",
+            "user_id": 1,
+            "created_at": "2026-09-11 18:49"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -70,6 +70,12 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 API REST en Laravel para TaskFlow, un gestor de tareas construido en el curso de
 Desarrollo Ágil y Frameworks para Aplicaciones Web.
 
+## Práctica de la sesión 04
+
+CRUD de tareas implementado con validación, API Resource y pruebas automatizadas.
+Consulta [docs/SESION-04.md](docs/SESION-04.md) para iniciar el servidor, ejecutar las pruebas
+e importar la colección de Postman y revisar la evidencia HTTP.
+
 ## Arquitectura
 
 Ver [docs/ARQUITECTURA.md](docs/ARQUITECTURA.md) para el diagrama C4 de contenedores

@@ -1,0 +1,61 @@
+{
+  "info": {
+    "name": "TaskFlow - Sesión 04",
+    "description": "Ejecutar en orden con el servidor de práctica. Listar obtiene user_id y Crear guarda task_id. Las pruebas no requieren autenticación en esta sesión.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://127.0.0.1:8000/api" },
+    { "key": "user_id", "value": "1" },
+    { "key": "task_id", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Listar tareas - 200",
+      "request": { "method": "GET", "header": [{ "key": "Accept", "value": "application/json" }], "url": "{{base_url}}/tasks" },
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["pm.test('200', () => pm.response.to.have.status(200));", "const tasks = pm.response.json().data; if (tasks.length) pm.collectionVariables.set('user_id', tasks[0].user_id);" ] } }]
+    },
+    {
+      "name": "Crear tarea - 201",
+      "request": {
+        "method": "POST", "url": "{{base_url}}/tasks",
+        "header": [{ "key": "Accept", "value": "application/json" }, { "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\"title\":\"Probar con Postman\",\"user_id\":{{user_id}}}", "options": { "raw": { "language": "json" } } }
+      },
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["pm.test('201', () => pm.response.to.have.status(201));", "pm.collectionVariables.set('task_id', pm.response.json().data.id);", "pm.test('Estado inicial', () => pm.expect(pm.response.json().data.status).to.eql('pendiente'));" ] } }]
+    },
+    {
+      "name": "Consultar tarea - 200",
+      "request": { "method": "GET", "header": [{ "key": "Accept", "value": "application/json" }], "url": "{{base_url}}/tasks/{{task_id}}" },
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["pm.test('200', () => pm.response.to.have.status(200));" ] } }]
+    },
+    {
+      "name": "Actualizar estado - 200",
+      "request": {
+        "method": "PUT", "url": "{{base_url}}/tasks/{{task_id}}",
+        "header": [{ "key": "Accept", "value": "application/json" }, { "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\"status\":\"en_progreso\"}", "options": { "raw": { "language": "json" } } }
+      },
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["pm.test('200', () => pm.response.to.have.status(200));", "pm.test('Estado actualizado', () => pm.expect(pm.response.json().data.status).to.eql('en_progreso'));" ] } }]
+    },
+    {
+      "name": "Crear sin título - 422",
+      "request": {
+        "method": "POST", "url": "{{base_url}}/tasks",
+        "header": [{ "key": "Accept", "value": "application/json" }, { "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\"user_id\":{{user_id}}}", "options": { "raw": { "language": "json" } } }
+      },
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["pm.test('422', () => pm.response.to.have.status(422));", "pm.test('Error de título', () => pm.expect(pm.response.json().errors).to.have.property('title'));" ] } }]
+    },
+    {
+      "name": "Eliminar tarea - 204",
+      "request": { "method": "DELETE", "header": [{ "key": "Accept", "value": "application/json" }], "url": "{{base_url}}/tasks/{{task_id}}" },
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["pm.test('204', () => pm.response.to.have.status(204));", "pm.test('Sin cuerpo', () => pm.expect(pm.response.text()).to.eql(''));" ] } }]
+    },
+    {
+      "name": "Consultar tarea eliminada - 404",
+      "request": { "method": "GET", "header": [{ "key": "Accept", "value": "application/json" }], "url": "{{base_url}}/tasks/{{task_id}}" },
+      "event": [{ "listen": "test", "script": { "type": "text/javascript", "exec": ["pm.test('404', () => pm.response.to.have.status(404));" ] } }]
+    }
+  ]
+}
