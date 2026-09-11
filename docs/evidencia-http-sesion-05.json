@@ -1,0 +1,494 @@
+{
+  "executed_at": "2026-09-11T19:02:33.493Z",
+  "client": "curl",
+  "base_url": "http://127.0.0.1:8000",
+  "checks": [
+    {
+      "method": "POST",
+      "endpoint": "/register",
+      "authenticated": false,
+      "expected": 200,
+      "status": 200,
+      "body": {
+        "name": "Ana",
+        "email": "ana.1789153346302@example.com",
+        "password": "[OMITIDO]"
+      },
+      "response": {
+        "user": {
+          "name": "Ana",
+          "email": "ana.1789153346302@example.com",
+          "updated_at": "2026-09-11T19:02:26.000000Z",
+          "created_at": "2026-09-11T19:02:26.000000Z",
+          "id": 2
+        },
+        "token": "[OMITIDO]"
+      }
+    },
+    {
+      "method": "POST",
+      "endpoint": "/register",
+      "authenticated": false,
+      "expected": 200,
+      "status": 200,
+      "body": {
+        "name": "Beto",
+        "email": "beto.1789153346302@example.com",
+        "password": "[OMITIDO]"
+      },
+      "response": {
+        "user": {
+          "name": "Beto",
+          "email": "beto.1789153346302@example.com",
+          "updated_at": "2026-09-11T19:02:27.000000Z",
+          "created_at": "2026-09-11T19:02:27.000000Z",
+          "id": 3
+        },
+        "token": "[OMITIDO]"
+      }
+    },
+    {
+      "method": "POST",
+      "endpoint": "/register",
+      "authenticated": false,
+      "expected": 422,
+      "status": 422,
+      "body": {
+        "name": "Ana",
+        "email": "ana.1789153346302@example.com",
+        "password": "[OMITIDO]"
+      },
+      "response": {
+        "message": "The email has already been taken.",
+        "errors": {
+          "email": [
+            "The email has already been taken."
+          ]
+        }
+      }
+    },
+    {
+      "method": "POST",
+      "endpoint": "/login",
+      "authenticated": false,
+      "expected": 401,
+      "status": 401,
+      "body": {
+        "email": "ana.1789153346302@example.com",
+        "password": "[OMITIDO]"
+      },
+      "response": {
+        "message": "Credenciales inválidas"
+      }
+    },
+    {
+      "method": "POST",
+      "endpoint": "/login",
+      "authenticated": false,
+      "expected": 200,
+      "status": 200,
+      "body": {
+        "email": "ana.1789153346302@example.com",
+        "password": "[OMITIDO]"
+      },
+      "response": {
+        "user": {
+          "id": 2,
+          "name": "Ana",
+          "email": "ana.1789153346302@example.com",
+          "email_verified_at": null,
+          "created_at": "2026-09-11T19:02:26.000000Z",
+          "updated_at": "2026-09-11T19:02:26.000000Z"
+        },
+        "token": "[OMITIDO]"
+      }
+    },
+    {
+      "method": "GET",
+      "endpoint": "/tasks",
+      "authenticated": false,
+      "expected": 401,
+      "status": 401,
+      "body": null,
+      "response": {
+        "message": "Unauthenticated."
+      }
+    },
+    {
+      "method": "GET",
+      "endpoint": "/user",
+      "authenticated": false,
+      "expected": 401,
+      "status": 401,
+      "body": null,
+      "response": {
+        "message": "Unauthenticated."
+      }
+    },
+    {
+      "method": "POST",
+      "endpoint": "/logout",
+      "authenticated": false,
+      "expected": 401,
+      "status": 401,
+      "body": null,
+      "response": {
+        "message": "Unauthenticated."
+      }
+    },
+    {
+      "method": "GET",
+      "endpoint": "/tasks",
+      "authenticated": true,
+      "expected": 401,
+      "status": 401,
+      "body": null,
+      "response": {
+        "message": "Unauthenticated."
+      }
+    },
+    {
+      "method": "GET",
+      "endpoint": "/user",
+      "authenticated": true,
+      "expected": 200,
+      "status": 200,
+      "body": null,
+      "response": {
+        "id": 2,
+        "name": "Ana",
+        "email": "ana.1789153346302@example.com",
+        "email_verified_at": null,
+        "created_at": "2026-09-11T19:02:26.000000Z",
+        "updated_at": "2026-09-11T19:02:26.000000Z"
+      }
+    },
+    {
+      "method": "GET",
+      "endpoint": "/tasks",
+      "authenticated": true,
+      "expected": 200,
+      "status": 200,
+      "body": null,
+      "response": {
+        "data": []
+      }
+    },
+    {
+      "method": "POST",
+      "endpoint": "/tasks",
+      "authenticated": true,
+      "expected": 201,
+      "status": 201,
+      "body": {
+        "title": "Tarea de Ana",
+        "user_id": 3
+      },
+      "response": {
+        "data": {
+          "id": 4,
+          "title": "Tarea de Ana",
+          "description": null,
+          "status": "pendiente",
+          "user_id": 2,
+          "created_at": "2026-09-11 19:02"
+        }
+      }
+    },
+    {
+      "method": "POST",
+      "endpoint": "/tasks",
+      "authenticated": true,
+      "expected": 201,
+      "status": 201,
+      "body": {
+        "title": "Tarea de Beto"
+      },
+      "response": {
+        "data": {
+          "id": 5,
+          "title": "Tarea de Beto",
+          "description": null,
+          "status": "pendiente",
+          "user_id": 3,
+          "created_at": "2026-09-11 19:02"
+        }
+      }
+    },
+    {
+      "method": "GET",
+      "endpoint": "/tasks",
+      "authenticated": true,
+      "expected": 200,
+      "status": 200,
+      "body": null,
+      "response": {
+        "data": [
+          {
+            "id": 4,
+            "title": "Tarea de Ana",
+            "description": null,
+            "status": "pendiente",
+            "user_id": 2,
+            "created_at": "2026-09-11 19:02"
+          }
+        ]
+      }
+    },
+    {
+      "method": "GET",
+      "endpoint": "/tasks",
+      "authenticated": true,
+      "expected": 200,
+      "status": 200,
+      "body": null,
+      "response": {
+        "data": [
+          {
+            "id": 5,
+            "title": "Tarea de Beto",
+            "description": null,
+            "status": "pendiente",
+            "user_id": 3,
+            "created_at": "2026-09-11 19:02"
+          }
+        ]
+      }
+    },
+    {
+      "method": "GET",
+      "endpoint": "/tasks/4",
+      "authenticated": true,
+      "expected": 404,
+      "status": 404,
+      "body": null,
+      "response": {
+        "message": "No query results for model [App\\Models\\Task] 4"
+      }
+    },
+    {
+      "method": "PUT",
+      "endpoint": "/tasks/4",
+      "authenticated": true,
+      "expected": 404,
+      "status": 404,
+      "body": {
+        "status": "completada"
+      },
+      "response": {
+        "message": "No query results for model [App\\Models\\Task] 4"
+      }
+    },
+    {
+      "method": "PATCH",
+      "endpoint": "/tasks/4",
+      "authenticated": true,
+      "expected": 404,
+      "status": 404,
+      "body": {
+        "status": "completada"
+      },
+      "response": {
+        "message": "No query results for model [App\\Models\\Task] 4"
+      }
+    },
+    {
+      "method": "DELETE",
+      "endpoint": "/tasks/4",
+      "authenticated": true,
+      "expected": 404,
+      "status": 404,
+      "body": null,
+      "response": {
+        "message": "No query results for model [App\\Models\\Task] 4"
+      }
+    },
+    {
+      "method": "GET",
+      "endpoint": "/tasks/4",
+      "authenticated": true,
+      "expected": 200,
+      "status": 200,
+      "body": null,
+      "response": {
+        "data": {
+          "id": 4,
+          "title": "Tarea de Ana",
+          "description": null,
+          "status": "pendiente",
+          "user_id": 2,
+          "created_at": "2026-09-11 19:02"
+        }
+      }
+    },
+    {
+      "method": "PUT",
+      "endpoint": "/tasks/4",
+      "authenticated": true,
+      "expected": 200,
+      "status": 200,
+      "body": {
+        "status": "en_progreso"
+      },
+      "response": {
+        "data": {
+          "id": 4,
+          "title": "Tarea de Ana",
+          "description": null,
+          "status": "en_progreso",
+          "user_id": 2,
+          "created_at": "2026-09-11 19:02"
+        }
+      }
+    },
+    {
+      "method": "PATCH",
+      "endpoint": "/tasks/4",
+      "authenticated": true,
+      "expected": 200,
+      "status": 200,
+      "body": {
+        "status": "completada"
+      },
+      "response": {
+        "data": {
+          "id": 4,
+          "title": "Tarea de Ana",
+          "description": null,
+          "status": "completada",
+          "user_id": 2,
+          "created_at": "2026-09-11 19:02"
+        }
+      }
+    },
+    {
+      "method": "POST",
+      "endpoint": "/tasks",
+      "authenticated": true,
+      "expected": 422,
+      "status": 422,
+      "body": {},
+      "response": {
+        "message": "The title field is required.",
+        "errors": {
+          "title": [
+            "The title field is required."
+          ]
+        }
+      }
+    },
+    {
+      "method": "PATCH",
+      "endpoint": "/tasks/4",
+      "authenticated": true,
+      "expected": 422,
+      "status": 422,
+      "body": {
+        "status": "incorrecto"
+      },
+      "response": {
+        "message": "The selected status is invalid.",
+        "errors": {
+          "status": [
+            "The selected status is invalid."
+          ]
+        }
+      }
+    },
+    {
+      "method": "DELETE",
+      "endpoint": "/tasks/4",
+      "authenticated": true,
+      "expected": 204,
+      "status": 204,
+      "body": null,
+      "response": null
+    },
+    {
+      "method": "GET",
+      "endpoint": "/tasks/4",
+      "authenticated": true,
+      "expected": 404,
+      "status": 404,
+      "body": null,
+      "response": {
+        "message": "No query results for model [App\\Models\\Task] 4"
+      }
+    },
+    {
+      "method": "DELETE",
+      "endpoint": "/tasks/5",
+      "authenticated": true,
+      "expected": 204,
+      "status": 204,
+      "body": null,
+      "response": null
+    },
+    {
+      "method": "POST",
+      "endpoint": "/logout",
+      "authenticated": true,
+      "expected": 200,
+      "status": 200,
+      "body": null,
+      "response": {
+        "message": "Sesión cerrada"
+      }
+    },
+    {
+      "method": "GET",
+      "endpoint": "/tasks",
+      "authenticated": true,
+      "expected": 401,
+      "status": 401,
+      "body": null,
+      "response": {
+        "message": "Unauthenticated."
+      }
+    },
+    {
+      "method": "GET",
+      "endpoint": "/tasks",
+      "authenticated": true,
+      "expected": 200,
+      "status": 200,
+      "body": null,
+      "response": {
+        "data": []
+      }
+    },
+    {
+      "method": "POST",
+      "endpoint": "/logout",
+      "authenticated": true,
+      "expected": 200,
+      "status": 200,
+      "body": null,
+      "response": {
+        "message": "Sesión cerrada"
+      }
+    },
+    {
+      "method": "POST",
+      "endpoint": "/logout",
+      "authenticated": true,
+      "expected": 200,
+      "status": 200,
+      "body": null,
+      "response": {
+        "message": "Sesión cerrada"
+      }
+    },
+    {
+      "method": "GET",
+      "endpoint": "/tasks",
+      "authenticated": true,
+      "expected": 401,
+      "status": 401,
+      "body": null,
+      "response": {
+        "message": "Unauthenticated."
+      }
+    }
+  ]
+}

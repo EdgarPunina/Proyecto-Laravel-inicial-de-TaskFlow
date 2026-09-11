@@ -1,5 +1,9 @@
 # Práctica de la sesión 04
 
+> Historial de la sesión 04. El backend actual requiere autenticación y el script
+> `scripts/check-api.cjs` verifica ahora la sesión 05. Consulta [SESION-05.md](SESION-05.md)
+> para las instrucciones y la colección de Postman vigentes.
+
 ## Análisis del proyecto y adaptación del instructivo
 
 La aplicación ejecutable está en `taskflow-backend`: PHP 8.1, Laravel 10, Eloquent y Sanctum 3. `taskflow-backend-starter` es una plantilla independiente del curso, sin el esqueleto completo de Laravel. Se conservaron sus cambios de arquitectura.

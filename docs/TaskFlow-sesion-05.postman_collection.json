@@ -1,0 +1,1012 @@
+{
+  "info": {
+    "name": "TaskFlow - Sesión 05 - Sanctum",
+    "description": "Ejecutar en orden. Registra Ana y Beto con correos únicos, prueba aislamiento y revocación de tokens. Las tareas creadas se eliminan y los tokens se revocan al terminar.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000/api"
+    },
+    {
+      "key": "run_id",
+      "value": ""
+    },
+    {
+      "key": "token_ana",
+      "value": ""
+    },
+    {
+      "key": "token_beto",
+      "value": ""
+    },
+    {
+      "key": "token_login",
+      "value": ""
+    },
+    {
+      "key": "task_ana",
+      "value": ""
+    },
+    {
+      "key": "task_beto",
+      "value": ""
+    },
+    {
+      "key": "user_ana",
+      "value": ""
+    },
+    {
+      "key": "user_beto",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Registrar Ana",
+      "request": {
+        "method": "POST",
+        "url": "{{base_url}}/register",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Ana\",\n  \"email\": \"ana.{{run_id}}@example.com\",\n  \"password\": \"password123\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.collectionVariables.set('run_id', Date.now().toString());"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+              "pm.collectionVariables.set('token_ana', pm.response.json().token);",
+              "pm.collectionVariables.set('user_ana', pm.response.json().user.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Registrar Beto",
+      "request": {
+        "method": "POST",
+        "url": "{{base_url}}/register",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Beto\",\n  \"email\": \"beto.{{run_id}}@example.com\",\n  \"password\": \"password123\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+              "pm.collectionVariables.set('token_beto', pm.response.json().token);",
+              "pm.collectionVariables.set('user_beto', pm.response.json().user.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Login incorrecto",
+      "request": {
+        "method": "POST",
+        "url": "{{base_url}}/login",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"ana.{{run_id}}@example.com\",\n  \"password\": \"incorrecta\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 401', () => pm.response.to.have.status(401));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Login de Ana: segunda sesión",
+      "request": {
+        "method": "POST",
+        "url": "{{base_url}}/login",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"ana.{{run_id}}@example.com\",\n  \"password\": \"password123\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+              "pm.collectionVariables.set('token_login', pm.response.json().token);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Tareas sin token",
+      "request": {
+        "method": "GET",
+        "url": "{{base_url}}/tasks",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 401', () => pm.response.to.have.status(401));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Perfil de Ana",
+      "request": {
+        "method": "GET",
+        "url": "{{base_url}}/user",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_ana}}"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Crear tarea de Ana: ignora user_id ajeno",
+      "request": {
+        "method": "POST",
+        "url": "{{base_url}}/tasks",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_ana}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Tarea de Ana\",\n  \"user_id\": \"{{user_beto}}\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 201', () => pm.response.to.have.status(201));",
+              "pm.collectionVariables.set('task_ana', pm.response.json().data.id);",
+              "pm.test('Propietario desde token', () => pm.expect(pm.response.json().data.user_id).to.eql(Number(pm.collectionVariables.get('user_ana'))));",
+              "pm.test('Estado predeterminado', () => pm.expect(pm.response.json().data.status).to.eql('pendiente'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Crear tarea de Beto",
+      "request": {
+        "method": "POST",
+        "url": "{{base_url}}/tasks",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_beto}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Tarea de Beto\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 201', () => pm.response.to.have.status(201));",
+              "pm.collectionVariables.set('task_beto', pm.response.json().data.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Listar solo tareas de ana",
+      "request": {
+        "method": "GET",
+        "url": "{{base_url}}/tasks",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_ana}}"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+              "pm.test('Solo tareas propias', () => { const data = pm.response.json().data; pm.expect(data.length).to.eql(1); data.forEach(t => pm.expect(t.user_id).to.eql(Number(pm.collectionVariables.get('user_ana')))); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Listar solo tareas de beto",
+      "request": {
+        "method": "GET",
+        "url": "{{base_url}}/tasks",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_beto}}"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+              "pm.test('Solo tareas propias', () => { const data = pm.response.json().data; pm.expect(data.length).to.eql(1); data.forEach(t => pm.expect(t.user_id).to.eql(Number(pm.collectionVariables.get('user_beto')))); });"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Beto no puede GET tarea de Ana",
+      "request": {
+        "method": "GET",
+        "url": "{{base_url}}/tasks/{{task_ana}}",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_beto}}"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 404', () => pm.response.to.have.status(404));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Beto no puede PUT tarea de Ana",
+      "request": {
+        "method": "PUT",
+        "url": "{{base_url}}/tasks/{{task_ana}}",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_beto}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"completada\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 404', () => pm.response.to.have.status(404));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Beto no puede PATCH tarea de Ana",
+      "request": {
+        "method": "PATCH",
+        "url": "{{base_url}}/tasks/{{task_ana}}",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_beto}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"completada\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 404', () => pm.response.to.have.status(404));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Beto no puede DELETE tarea de Ana",
+      "request": {
+        "method": "DELETE",
+        "url": "{{base_url}}/tasks/{{task_ana}}",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_beto}}"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 404', () => pm.response.to.have.status(404));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Ana consulta su tarea",
+      "request": {
+        "method": "GET",
+        "url": "{{base_url}}/tasks/{{task_ana}}",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_ana}}"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Ana actualiza su tarea",
+      "request": {
+        "method": "PATCH",
+        "url": "{{base_url}}/tasks/{{task_ana}}",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_ana}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"en_progreso\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Crear sin título",
+      "request": {
+        "method": "POST",
+        "url": "{{base_url}}/tasks",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_ana}}"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 422', () => pm.response.to.have.status(422));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Ana elimina su tarea",
+      "request": {
+        "method": "DELETE",
+        "url": "{{base_url}}/tasks/{{task_ana}}",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_ana}}"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 204', () => pm.response.to.have.status(204));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Beto elimina su tarea",
+      "request": {
+        "method": "DELETE",
+        "url": "{{base_url}}/tasks/{{task_beto}}",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_beto}}"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 204', () => pm.response.to.have.status(204));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Cerrar primera sesión de Ana",
+      "request": {
+        "method": "POST",
+        "url": "{{base_url}}/logout",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_ana}}"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Token de Ana revocado",
+      "request": {
+        "method": "GET",
+        "url": "{{base_url}}/tasks",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_ana}}"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 401', () => pm.response.to.have.status(401));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Segunda sesión de Ana sigue válida",
+      "request": {
+        "method": "GET",
+        "url": "{{base_url}}/tasks",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_login}}"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Cerrar segunda sesión de Ana",
+      "request": {
+        "method": "POST",
+        "url": "{{base_url}}/logout",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_login}}"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Cerrar sesión de Beto",
+      "request": {
+        "method": "POST",
+        "url": "{{base_url}}/logout",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_beto}}"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 200', () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Token de Beto revocado",
+      "request": {
+        "method": "GET",
+        "url": "{{base_url}}/tasks",
+        "auth": {
+          "type": "noauth"
+        },
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token_beto}}"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('HTTP 401', () => pm.response.to.have.status(401));"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

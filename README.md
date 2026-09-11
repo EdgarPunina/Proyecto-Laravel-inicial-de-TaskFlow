@@ -1,3 +1,12 @@
+# TaskFlow: sesión 05 completada
+
+API de tareas con registro, login, logout y autenticación mediante Laravel Sanctum.
+Cada usuario puede acceder únicamente a sus propias tareas.
+
+Consulta [la guía de sesión 05](docs/SESION-05.md) para arrancar la aplicación, ejecutar
+las pruebas y usar la colección de Postman. Las rutas de tareas ahora requieren un
+token en `Authorization: Bearer <token>` y el header `Accept: application/json`.
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
