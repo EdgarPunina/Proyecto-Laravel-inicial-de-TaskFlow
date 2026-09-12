@@ -26,7 +26,7 @@ Copia el archivo de entorno solo durante la primera instalaci?n. El script migra
 
 ## Arquitectura
 
-![Arquitectura de TaskFlow](docs/diagrama-arquitectura.svg)
+![Arquitectura de TaskFlow](diagrama-arquitectura.svg)
 
 ```mermaid
 flowchart LR
@@ -37,7 +37,7 @@ flowchart LR
   Eloquent --> SQLite[(SQLite de pr?ctica / MySQL)]
 ```
 
-Las rutas delegan en AuthController y TaskController. Los controladores validan la entrada y consultan la relaci?n tasks del usuario autenticado; TaskResource limita la respuesta a los campos p?blicos. Consulta [las decisiones de arquitectura](docs/ARQUITECTURA.md).
+Las rutas delegan en AuthController y TaskController. Los controladores validan la entrada y consultan la relaci?n tasks del usuario autenticado; TaskResource limita la respuesta a los campos p?blicos. Consulta [las decisiones de arquitectura](ARQUITECTURA.md).
 
 ## Patrones de dise?o
 
@@ -83,4 +83,4 @@ php artisan test
 
 23 pruebas y 110 aserciones verifican autenticaci?n, aislamiento por usuario, CRUD, validaci?n, Resource y Observer. .github/workflows/tests.yml instala PHP 8.2 y dependencias, genera una clave nueva y ejecuta la suite en cada push a main, pull request o ejecuci?n manual. phpunit.xml fuerza SQLite en memoria: no requiere MySQL ni credenciales externas.
 
-No se versionan .env, vendor, bases SQLite ni credenciales. Las gu?as [sesi?n 04](docs/SESION-04.md) y [sesi?n 05](docs/SESION-05.md) conservan la evidencia anterior.
+No se versionan .env, vendor, bases SQLite ni credenciales. Las gu?as [sesi?n 04](SESION-04.md) y [sesi?n 05](SESION-05.md) conservan la evidencia anterior.
